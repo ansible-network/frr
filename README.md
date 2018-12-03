@@ -1,4 +1,4 @@
-# [WIP] frr
+# frr
 
 This Ansible Network role provides a set of platform dependent fuctions that
 are designed to work with devices running Free Range Routing. The functions included 
