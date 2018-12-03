@@ -27,20 +27,18 @@
 #
 from ansible.module_utils.frr.config import ConfigBase
 
-class BgpNetwork(ConfigBase):
+
+class BgpTimer(ConfigBase):
 
     argument_spec = {
-        'network': dict(required=True),
-        'route_map': dict(),
-        'state': dict(choices=['present', 'absent'], default='present')
+        'keepalive': dict(type='int', required=True),
+        'holdtime': dict(type='int', required=True)
     }
 
-    identifier = ('network', )
+    identifier = ('keepalive', )
 
     def render(self, config=None):
-        cmd = 'network %s' % self.network
-        if self.route_map:
-            cmd += ' route-map %s' % self.route_map
+        cmd = 'timers bgp %s %s' % (self.keepalive, self.holdtime)
 
         if self.state == 'absent':
             if not config or cmd in config:

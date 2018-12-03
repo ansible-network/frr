@@ -26,11 +26,13 @@
 # USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 from ansible.module_utils.network.common.utils import to_list
-from ansible.module_utils.network.frr.config import ConfigBase
-from ansible.module_utils.network.frr.config.bgp import get_bgp_as
-from ansible.module_utils.network.frr.config.bgp.network import BgpNetwork
-from ansible.module_utils.network.frr.config.bgp.neighbor import BgpNeighbor
-from ansible.module_utils.network.frr.config.bgp.address_family import BgpAddressFamily
+from ansible.module_utils.frr.config import ConfigBase
+from ansible.module_utils.frr.config.bgp import get_bgp_as
+from ansible.module_utils.frr.config.bgp.network import BgpNetwork
+from ansible.module_utils.frr.config.bgp.neighbor import BgpNeighbor
+from ansible.module_utils.frr.config.bgp.address_family import BgpAddressFamily
+from ansible.module_utils.frr.config.bgp.timer import BgpTimer
+
 
 class BgpProcess(ConfigBase):
 
@@ -38,9 +40,10 @@ class BgpProcess(ConfigBase):
         'bgp_as': dict(type='int'),
         'router_id': dict(),
         'log_neighbor_changes': dict(type='bool'),
-        'address_family': dict(type='list', elements='dict', options=BgpAddressFamily.argument_spec),
+        'address_families': dict(type='list', elements='dict', options=BgpAddressFamily.argument_spec),
         'neighbors': dict(type='list', elements='dict', options=BgpNeighbor.argument_spec),
         'networks': dict(type='list', elements='dict', options=BgpNetwork.argument_spec),
+        'timers': dict(type='dict', elements='dict', options=BgpTimer.argument_spec),
         'state': dict(choices=['present', 'absent', 'replace'], default='present')
     }
 
@@ -109,13 +112,21 @@ class BgpProcess(ConfigBase):
                 commands.extend(resp)
         return commands
 
-    def _set_address_family(self, config):
+    def _set_address_families(self, config):
         """ generate address-family configuration
         """
         commands = list()
-        for entry in self.address_family:
+        for entry in self.address_families:
             af = BgpAddressFamily(**entry)
             resp = af.render(config)
             if resp:
                 commands.extend(resp)
         return commands
+
+    def _set_timers(self, config):
+        """generate bgp timer related configuration
+        """
+        timer = BgpTimer(**self.timers)
+        resp = timer.render(config)
+        if resp:
+            return resp

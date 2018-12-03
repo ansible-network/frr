@@ -47,6 +47,17 @@ options:
     description:
       - Enable/Disable logging neighbor up/down and reset reason
     type: bool
+  timers:
+    description: 
+      - Specify BGP Timer related configuration
+    suboptions:
+      keepalive:
+        description:
+          - Frequency with which the FRR sends keepalive messages to its peer.
+        type: int
+      holdtime:
+        description:
+          - Interval after not receiving a keepalive message that the software declares a peer dead.
   neighbors:
     description: 
        - Specifies BGP neighbor related configurations
@@ -131,6 +142,41 @@ options:
               choices:
                 - present
                 - absent
+      af_neighbors:
+        description:
+          - Specifies Address Family neighbor related configurations
+          - This option extends the top-level parameter - neighbors 
+        suboptions:
+          activate:
+            description:
+              - Enable the Address Family for this Neighbor
+            type: bool
+          remove_private_as:
+            description:
+              - Remove private AS number from outbound updates
+            type: bool
+          route_map:
+            description:
+              - Specify the route map to apply to this neighbor
+          route_map_dir:
+            description:
+              - Specify the direction of route map to be applied
+            choices:
+              - in
+              - out
+            default: in
+          route_server_client:
+            description:
+              - Configure a neighbor as Route Server client
+            type: bool
+          weight:
+            description:
+              - Specify default weight for routes from this neighbor
+            type: int
+          next_hop_self:
+            description:
+              - Enable/Disable the next hop calculation for this neighbor
+            type: bool
       state:
         description:
           - Specifies the state of address family
