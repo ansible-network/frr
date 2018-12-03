@@ -10,7 +10,13 @@ in this role inlcuding both configuration and fact collection.
 * Ansible 2.7 or later
 * Ansible Network Engine Role 2.6.2 or later
 
+## License
 
+GPLv3
+
+## Author Information
+
+Ansible Network Engineering Team
 
 
 
