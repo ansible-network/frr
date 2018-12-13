@@ -26,7 +26,7 @@
 # USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 from ansible.module_utils.network.common.utils import to_list
-from ansible.module_utils.frr.config import ConfigBase
+from ansible.module_utils.network.frr.config import ConfigBase
 
 class BgpNeighbor(ConfigBase):
 

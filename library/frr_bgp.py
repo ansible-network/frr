@@ -227,8 +227,8 @@ commands:
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
-from ansible.module_utils.frr.config.bgp import get_bgp_as
-from ansible.module_utils.frr.config.bgp.process import BgpProcess
+from ansible.module_utils.network.frr.config.bgp import get_bgp_as
+from ansible.module_utils.network.config.bgp.process import BgpProcess
 
 
 def main():

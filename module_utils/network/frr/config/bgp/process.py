@@ -26,12 +26,12 @@
 # USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 from ansible.module_utils.network.common.utils import to_list
-from ansible.module_utils.frr.config import ConfigBase
-from ansible.module_utils.frr.config.bgp import get_bgp_as
-from ansible.module_utils.frr.config.bgp.network import BgpNetwork
-from ansible.module_utils.frr.config.bgp.neighbor import BgpNeighbor
-from ansible.module_utils.frr.config.bgp.address_family import BgpAddressFamily
-from ansible.module_utils.frr.config.bgp.timer import BgpTimer
+from ansible.module_utils.network.frr.config import ConfigBase
+from ansible.module_utils.network.frr.config.bgp import get_bgp_as
+from ansible.module_utils.network.frr.config.bgp.network import BgpNetwork
+from ansible.module_utils.network.frr.config.bgp.address_family import BgpAddressFamily
+from ansible.module_utils.network.frr.config.bgp.neighbor import BgpNeighbor
+from ansible.module_utils.network.frr.config.bgp.timer import BgpTimer
 
 
 class BgpProcess(ConfigBase):
