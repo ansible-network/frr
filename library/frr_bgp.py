@@ -24,19 +24,19 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: frr_bgp
+module: ios_bgp
 version_added: "2.8"
 author: "Nilashish Chakraborty (@nilashishc)"
-short_description: Configure global BGP protocol settings on FRR
+short_description: Configure global BGP protocol settings on Cisco IOS
 description:
   - This module provides configuration management of global BGP parameters
     on devices running Free Range Routing(FRR).
 notes:
-  - Tested against FRRouting 5.0.1
+  - Tested against FRRouting 5.0.1options:
 options:
   bgp_as:
     description:
-      - Specifies the BGP Autonomous System number to configure on the device
+      - Specifies the BGP Autonomous System (AS) number to configure on the device
     type: int
     required: true
   router_id:
@@ -45,22 +45,11 @@ options:
     default: null
   log_neighbor_changes:
     description:
-      - Enable/Disable logging neighbor up/down and reset reason
+      - Enable/disable logging neighbor up/down and reset reason
     type: bool
-  timers:
-    description: 
-      - Specify BGP Timer related configuration
-    suboptions:
-      keepalive:
-        description:
-          - Frequency with which the FRR sends keepalive messages to its peer.
-        type: int
-      holdtime:
-        description:
-          - Interval after not receiving a keepalive message that the software declares a peer dead.
   neighbors:
-    description: 
-       - Specifies BGP neighbor related configurations
+    description:
+      - Specifies BGP neighbor related configurations
     suboptions:
       neighbor:
         description:
@@ -72,8 +61,12 @@ options:
         type: int
         required: True
       route_reflector_client:
-        description: 
+        description:
           - Specify a neighbor as a route reflector client
+        type: bool
+      route_server_client:
+        description:
+          - Specify a neighbor as a route server client
         type: bool
       update_source:
         description:
@@ -91,14 +84,57 @@ options:
       ebgp_multihop:
         description:
           - Specifies the maximum hop count for EBGP neighbors not on directly connected networks
+          - The range is from 1 to 255.
         type: int
-      passive:
-        description:
-          - Enable/Disable sending open messages to a neighbor
-        type: bool
       peer_group:
         description:
-          - Name of peer-group the neighbor is a member of
+          - Name of the peer group that the neighbor is a member of
+      timers:
+        description:
+          - Specifies BGP neighbor timer related configurations
+        suboptions:
+          keepalive:
+            description:
+              - Frequency (in seconds) with which the FRR sends keepalive messages to its peer.
+              - The range is from 0 to 65535.
+            type: int
+            required: True
+          holdtime:
+            description:
+              - Interval (in seconds) after not receiving a keepalive message that FRR declares a peer dead.
+              - The range is from 0 to 65535.
+            type: int
+            required: True
+      activate:
+        description:
+          - Enable the address family for this neighbor
+        type: bool
+      remove_private_as:
+        description:
+          - Remove the private AS number from outbound updates
+        type: bool
+      route_map:
+        description:
+          - Specify the route map to apply to this neighbor
+      route_map_dir:
+        description:
+          - Specify the direction of the route map to be applied
+        choices:
+          - in
+          - out
+        default: in
+      weight:
+        description:
+          - Specify default weight for routes from this neighbor
+        type: int
+      next_hop_self:
+        description:
+          - Enable/disable the next hop calculation for this neighbor
+        type: bool
+      next_hop_unchanged:
+        description:
+          - Enable/disable propagation of next hop unchanged for iBGP paths to this neighbor
+        type: bool
       state:
         description:
           - Specifies the state of the BGP neighbor
@@ -106,9 +142,30 @@ options:
         choices:
           - present
           - absent
-  address_family:
+  networks:
     description:
-      - Specifies address family related configurations
+      - Specify networks to announce via BGP
+    suboptions:
+      network:
+        description:
+          - Network ID to announce via BGP
+        required: True
+      mask:
+        description:
+          - Subnet mask for the network to announce
+      route_map:
+        description:
+          - Route map to modify the attributes
+      state:
+        description:
+          - Specifies the state of network
+        default: present
+        choices:
+          - present
+          - absent
+  address_families:
+    description:
+      - Specifies BGP address family related configurations
     suboptions:
       name:
         description:
@@ -116,7 +173,7 @@ options:
         choices:
           - ipv4
           - ipv6
-        required: True 
+        required: True
       cast:
         description:
           - Specifies the type of cast for the address family
@@ -125,6 +182,7 @@ options:
           - unicast
           - multicast
           - labeled-unicast
+        default: unicast
       redistribute:
         description:
           - Specifies the redistribute information from another routing protocol
@@ -132,23 +190,48 @@ options:
           protocol:
             description:
               - Specifies the protocol for configuring redistribute information
-            route_map:
-              description:
-                - Specifies the route map reference
-            state:
-              description:
-                - Specifies the state of redistribution
-              default: present
-              choices:
-                - present
-                - absent
+            required: True
+          metric:
+            description:
+              - Specifies the metric for redistributed routes
+          route_map:
+            description:
+              - Specifies the route map reference
+          state:
+            description:
+              - Specifies the state of redistribution
+            default: present
+            choices:
+              - present
+              - absent
+      networks:
+        description:
+          - Specify networks to announce via BGP
+        suboptions:
+          network:
+            description:
+              - Network ID to announce via BGP
+            required: True
+          mask:
+            description:
+              - Subnet mask for the network to announce
+          route_map:
+            description:
+              - Route map to modify the attributes
+          state:
+            description:
+              - Specifies the state of network
+            default: present
+            choices:
+              - present
+              - absent      
       state:
         description:
           - Specifies the state of address family
         default: present
         choices:
           - present
-          - absent  
+          - absent
   state:
     description:
       - Specifies the state of the BGP process configured on the device
@@ -156,6 +239,7 @@ options:
     choices:
       - present
       - absent
+      - replace
 """
 
 EXAMPLES = """
