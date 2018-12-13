@@ -32,13 +32,13 @@ class BgpTimer(ConfigBase):
 
     argument_spec = {
         'keepalive': dict(type='int', required=True),
-        'holdtime': dict(type='int', required=True)
+        'holdtime': dict(type='int', required=True),
     }
 
     identifier = ('keepalive', )
 
-    def render(self, config=None):
-        cmd = 'timers bgp %s %s' % (self.keepalive, self.holdtime)
+    def render(self, neighbor, config=None):
+        cmd = 'neighbor %s timers %s %s' % (neighbor, self.keepalive, self.holdtime)
 
         if self.state == 'absent':
             if not config or cmd in config:

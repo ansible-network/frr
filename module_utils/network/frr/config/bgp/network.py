@@ -31,6 +31,7 @@ class BgpNetwork(ConfigBase):
 
     argument_spec = {
         'network': dict(required=True),
+        'mask': dict(),
         'route_map': dict(),
         'state': dict(choices=['present', 'absent'], default='present')
     }
@@ -39,6 +40,10 @@ class BgpNetwork(ConfigBase):
 
     def render(self, config=None):
         cmd = 'network %s' % self.network
+
+        if '/' not in self.network:
+            cmd += ' %s' % self.mask
+
         if self.route_map:
             cmd += ' route-map %s' % self.route_map
 

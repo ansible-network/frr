@@ -31,7 +31,6 @@ from ansible.module_utils.network.frr.config.bgp import get_bgp_as
 from ansible.module_utils.network.frr.config.bgp.network import BgpNetwork
 from ansible.module_utils.network.frr.config.bgp.address_family import BgpAddressFamily
 from ansible.module_utils.network.frr.config.bgp.neighbor import BgpNeighbor
-from ansible.module_utils.network.frr.config.bgp.timer import BgpTimer
 
 
 class BgpProcess(ConfigBase):
@@ -43,7 +42,6 @@ class BgpProcess(ConfigBase):
         'address_families': dict(type='list', elements='dict', options=BgpAddressFamily.argument_spec),
         'neighbors': dict(type='list', elements='dict', options=BgpNeighbor.argument_spec),
         'networks': dict(type='list', elements='dict', options=BgpNetwork.argument_spec),
-        'timers': dict(type='dict', elements='dict', options=BgpTimer.argument_spec),
         'state': dict(choices=['present', 'absent', 'replace'], default='present')
     }
 
@@ -59,6 +57,7 @@ class BgpProcess(ConfigBase):
             if bgp_as:
                 commands.append('no router bgp %s' % bgp_as)
             if self.state == 'replace':
+                config = ""
                 commands.append(context)
 
         if self.state in ('present', 'replace'):
@@ -78,7 +77,7 @@ class BgpProcess(ConfigBase):
         return commands
 
     def _set_router_id(self, config=None):
-        cmd = 'router-id %s' % self.router_id
+        cmd = 'bgp router-id %s' % self.router_id
         if not config or cmd not in config:
             return cmd
 
@@ -122,11 +121,3 @@ class BgpProcess(ConfigBase):
             if resp:
                 commands.extend(resp)
         return commands
-
-    def _set_timers(self, config):
-        """generate bgp timer related configuration
-        """
-        timer = BgpTimer(**self.timers)
-        resp = timer.render(config)
-        if resp:
-            return resp

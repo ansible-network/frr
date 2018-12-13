@@ -27,6 +27,7 @@
 #
 from ansible.module_utils.network.common.utils import to_list
 from ansible.module_utils.network.frr.config import ConfigBase
+from ansible.module_utils.network.frr.config.bgp.timer import BgpTimer
 
 class BgpNeighbor(ConfigBase):
 
@@ -49,6 +50,7 @@ class BgpNeighbor(ConfigBase):
         'route_server_client': dict(type='bool'),
         'weight': dict(type='int'),
         'next_hop_self': dict(type='bool'),
+        'timers': dict(type='dict', elements='dict', options=BgpTimer.argument_spec),
         'state': dict(choices=['present', 'absent'], default='present')
     }
 
@@ -163,3 +165,11 @@ class BgpNeighbor(ConfigBase):
             cmd = 'no %s' % cmd
         if not config or cmd not in config:
             return
+
+    def _set_timers(self, config):
+        """generate bgp timer related configuration
+        """
+        timer = BgpTimer(**self.timers)
+        resp = timer.render(config)
+        if resp:
+            return resp
