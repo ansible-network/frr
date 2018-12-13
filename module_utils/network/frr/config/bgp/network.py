@@ -41,7 +41,7 @@ class BgpNetwork(ConfigBase):
     def render(self, config=None):
         cmd = 'network %s' % self.network
 
-        if '/' not in self.network:
+        if '/' not in self.network and self.mask:
             cmd += ' %s' % self.mask
 
         if self.route_map:

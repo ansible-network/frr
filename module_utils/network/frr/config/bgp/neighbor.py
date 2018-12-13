@@ -170,6 +170,6 @@ class BgpNeighbor(ConfigBase):
         """generate bgp timer related configuration
         """
         timer = BgpTimer(**self.timers)
-        resp = timer.render(config)
+        resp = timer.render(self.neighbor, config)
         if resp:
             return resp

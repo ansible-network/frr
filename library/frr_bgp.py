@@ -165,13 +165,18 @@ EXAMPLES = """
     router_id: 1.1.1.1
     log_neighbor_changes: True
     neighbors:
-      - neighbor: 182.168.10.1
+      - neighbor: 192.168.10.1
+        remote_as: 65530
+      - neighbor: 2.2.2.2
         remote_as: 500
-      - neighbor: 192.168.20.1
-        remote_as: 500
+        timers:
+           keepalive: 300
+           holdtime: 360
     networks:
-      - network: 10.0.0.0/8
-      - network: 11.0.0.0/8
+      - network: 10.0.0.0
+        route_map: RMAP_1
+      - network: 192.168.2.0
+        mask: 255.255.254.0
     state: present
 
 - name: remove bgp as 65000 from config
@@ -186,14 +191,20 @@ commands:
   returned: always
   type: list
   sample:
-    - router bgp 500
-    - neighbor 182.168.10.1 remote-as 500
+    - router bgp 65000
+    - bgp router-id 1.1.1.1
+    - bgp log-neighbor-changes
+    - neighbor 192.168.10.1 remote-as 65530
+    - neighbor 2.2.2.2 remote-as 500
+    - neighbor 2.2.2.2 timers 300 360
+    - network 10.0.0.0 route-map RMAP_1
+    - network 192.168.2.0 mask 255.255.254.0 
 """
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
 from ansible.module_utils.network.frr.config.bgp import get_bgp_as
-from ansible.module_utils.network.config.bgp.process import BgpProcess
+from ansible.module_utils.network.frr.config.bgp.process import BgpProcess
 
 
 def main():
