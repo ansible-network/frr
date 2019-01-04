@@ -38,7 +38,7 @@ REDISTRIBUTE_PROTOCOLS = frozenset(['ospf', 'eigrp', 'isis', 'table'
                                     'static', 'connected', 'sharp', 'nhrp', 'kernel', 'babel', 'rip'])
 
 
-@register_provider('ios', 'frr_bgp')
+@register_provider('frr', 'frr_bgp')
 class Provider(CliProvider):
 
     def render(self, config=None):
