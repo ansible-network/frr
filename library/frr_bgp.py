@@ -24,10 +24,10 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: ios_bgp
+module: frr_bgp
 version_added: "2.8"
 author: "Nilashish Chakraborty (@nilashishc)"
-short_description: Configure global BGP protocol settings on Cisco IOS
+short_description: Configure global BGP settings on Free Range Routing(FRR).
 description:
   - This module provides configuration management of global BGP parameters
     on devices running Free Range Routing(FRR).
