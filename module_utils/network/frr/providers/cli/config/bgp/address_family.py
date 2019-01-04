@@ -126,7 +126,7 @@ class AddressFamily(CliProvider):
 
             cmd = 'redistribute %s' % entry['protocol']
 
-            if entry['id'] and entry['protocol'] in ('ospf'):
+            if entry['id'] and entry['protocol'] in ('ospf', 'table'):
                 cmd += ' %s' % entry['id']
 
             if entry['metric']:
