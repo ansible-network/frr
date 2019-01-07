@@ -133,9 +133,9 @@ options:
             description:
               - Network ID to announce via BGP.
             required: True
-          mask:
+          masklen:
             description:
-              - Subnet mask for the network to announce.
+              - Subnet mask length for the network to announce(e.g, 8, 16, 24, etc.).
           route_map:
             description:
               - Route map to modify the attributes.
@@ -181,9 +181,9 @@ options:
                 description:
                   - Network ID to announce via BGP.
                 required: True
-              mask:
+              masklen:
                 description:
-                  - Subnet mask for the network to announce.
+                  - Subnet mask length for the network to announce(e.g, 8, 16, 24, etc.).
               route_map:
                 description:
                   - Route map to modify the attributes.
@@ -276,26 +276,26 @@ options:
 """
 
 EXAMPLES = """
-- name: configure global bgp as 65535
+- name: configure global bgp as 64496
   frr_bgp:
     config:
-      bgp_as: 65535
-      router_id: 1.1.1.1
+      bgp_as: 64496
+      router_id: 192.0.2.1
       log_neighbor_changes: True
       neighbors:
-        - neighbor: 192.168.10.1
-          remote_as: 65535
+        - neighbor: 192.51.100.1
+          remote_as: 64497
           timers:
             keepalive: 120
             holdtime: 360
-        - neighbor: 2.2.2.2
-          remote_as: 500
+        - neighbor: 198.51.100.2
+          remote_as: 64498
       networks:
-        - prefix: 10.0.0.0
-          masklen: 8
+        - prefix: 192.0.2.0
+          masklen: 24
           route_map: RMAP_1
-        - prefix: 192.168.2.0
-          masklen: 23
+        - prefix: 198.51.100.0
+          masklen: 24
       address_family:
         - afi: ipv4
           safi: unicast
@@ -304,10 +304,10 @@ EXAMPLES = """
               id: 223
               metric: 10
     operation: merge
-- name: remove bgp as 65000 from config
+- name: remove bgp as 64496 from config
   frr_bgp:
     config:
-      bgp_as: 65000
+      bgp_as: 64496
     operation: delete
 """
 
@@ -317,17 +317,18 @@ commands:
   returned: always
   type: list
   sample:
-    - router bgp 65000
-    - bgp router-id 1.1.1.1
-    - bgp log-neighbor-changes
-    - neighbor 192.168.10.1 remote-as 65530
-    - neighbor 2.2.2.2 remote-as 500
-    - neighbor 2.2.2.2 timers 300 360
-    - network 10.0.0.0 route-map RMAP_1
-    - network 192.168.2.0 mask 255.255.254.0
+    - router bgp 64496
+    - bgp router-id 192.0.2.1
+    - neighbor 192.51.100.1 remote-as 64497 
+    - neighbor 192.51.100.1 timers 120 360 
+    - neighbor 198.51.100.2 remote-as 64498
     - address-family ipv4 unicast
     - redistribute ospf 223 metric 10
     - exit-address-family
+    - bgp log-neighbor-changes
+    - network 192.0.2.0/24 route-map RMAP_1
+    - network 198.51.100.0/24
+    - exit
 """
 from ansible.module_utils._text import to_text
 from ansible.module_utils.network.frr.providers.module import NetworkModule
