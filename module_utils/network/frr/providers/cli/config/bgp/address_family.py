@@ -65,9 +65,10 @@ class AddressFamily(CliProvider):
 
             safe_list.append(context)
 
-        if config:
-            resp = self._negate_config(config, safe_list)
-            commands.extend(resp)
+        if self.params['operation'] == 'replace':
+            if config:
+                resp = self._negate_config(config, safe_list)
+                commands.extend(resp)
 
         return commands
 
@@ -99,7 +100,7 @@ class AddressFamily(CliProvider):
         for entry in item['networks']:
             network = entry['prefix']
             if entry['masklen']:
-                network += ' /%s' % entry['masklen']
+                network = '%s/%s' % (entry['prefix'], entry['masklen'])
             safe_list.append(network)
 
             cmd = 'network %s' % network
@@ -110,10 +111,11 @@ class AddressFamily(CliProvider):
             if not config or cmd not in config:
                 commands.append(cmd)
 
-        if config:
-            matches = re.findall(r'network (\S+)', config, re.M)
-            for entry in set(matches).difference(safe_list):
-                commands.append('no network %s' % entry)
+        if self.params['operation'] == 'replace':
+            if config:
+                matches = re.findall(r'network (\S+)', config, re.M)
+                for entry in set(matches).difference(safe_list):
+                    commands.append('no network %s' % entry)
 
         return commands
 
@@ -122,12 +124,13 @@ class AddressFamily(CliProvider):
         safe_list = list()
 
         for entry in item['redistribute']:
-            safe_list.append(entry['protocol'])
+            option = entry['protocol']
 
             cmd = 'redistribute %s' % entry['protocol']
 
             if entry['id'] and entry['protocol'] in ('ospf', 'table'):
                 cmd += ' %s' % entry['id']
+                option += ' %s' % entry['id']
 
             if entry['metric']:
                 cmd += ' metric %s' % entry['metric']
@@ -138,10 +141,15 @@ class AddressFamily(CliProvider):
             if not config or cmd not in config:
                 commands.append(cmd)
 
-        if config:
-            matches = re.findall(r'redistribute (\S+)', config, re.M)
-            for entry in set(matches).difference(safe_list):
-                commands.append('no redistribute %s' % entry)
+            safe_list.append(option)
+
+        if self.params['operation'] == 'replace':
+            if config:
+                matches = re.findall(r'redistribute (\S+)(?:\s*)(\d*)', config, re.M)
+                for i in range(0, len(matches)):
+                    matches[i] = ' '.join(matches[i]).strip()
+                for entry in set(matches).difference(safe_list):
+                    commands.append('no redistribute %s' % entry)
 
         return commands
 

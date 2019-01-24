@@ -32,7 +32,7 @@ description:
   - This module provides configuration management of global BGP parameters
     on devices running Free Range Routing(FRR).
 notes:
-  - Tested against FRRouting 5.0.1.
+  - Tested against FRRouting 6.0.
 options:
   config:
      description:
@@ -264,14 +264,17 @@ options:
   operation:
     description:
       - Specifies the operation to be performed on the BGP process configured on the device.
-      - Merge will configure the device based on the options specified and negate the configurations that are
-        not specified for that option(i.e, networks, neighbors, etc.) in the task but present in running-configuration.
-      - Replace will remove the existing BGP configuration on the device and re-configure it with the options specified.
-      - Delete will remove the existing BGP configuration from the device.
+      - In case of merge, the input configuration will be merged with the existing BGP configuration on the device.
+      - In case of replace, if there is a diff between the existing configuration and the input configuration, the
+        existing configuration will be replaced by the input configuration for every option that has the diff.
+      - In case of override, all the existing BGP configuration will be removed from the device and replaced with
+        the input configuration.
+      - In case of delete the existing BGP configuration will be removed from the device.
     default: merge
     choices:
       - merge
       - replace
+      - override
       - delete
 """
 
@@ -393,7 +396,7 @@ def main():
 
     argument_spec = {
         'config': dict(type='dict', elements='dict', options=config_spec),
-        'operation': dict(default='merge', choices=['merge', 'replace', 'delete'])
+        'operation': dict(default='merge', choices=['merge', 'replace', 'override', 'delete'])
     }
 
     module = NetworkModule(argument_spec=argument_spec,
