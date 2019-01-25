@@ -162,7 +162,6 @@ options:
           redistribute:
             description:
               - Specifies the redistribute information from another routing protocol.
-              options
             suboptions:
               protocol:
                 description:
