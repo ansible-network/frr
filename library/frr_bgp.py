@@ -162,10 +162,24 @@ options:
           redistribute:
             description:
               - Specifies the redistribute information from another routing protocol.
+              options
             suboptions:
               protocol:
                 description:
                   - Specifies the protocol for configuring redistribute information.
+                choices:
+                  - ospf
+                  - osfp6
+                  - eigrp
+                  - isis
+                  - table
+                  - static
+                  - connected
+                  - sharp
+                  - nhrp
+                  - kernel
+                  - babel
+                  - rip
                 required: True
               metric:
                 description:

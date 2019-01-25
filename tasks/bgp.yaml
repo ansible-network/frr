@@ -1,0 +1,31 @@
+---
+- name: configure global bgp as 64496
+  frr_bgp:
+    config:
+      bgp_as: 64496
+      router_id: 192.0.2.1
+      log_neighbor_changes: True
+      neighbors:
+        - neighbor: 192.168.10.12
+          remote_as: 64497
+          timers:
+            keepalive: 120
+            holdtime: 360
+        - neighbor: 198.51.100.2
+          remote_as: 64498
+      networks:
+        - prefix: 192.0.1.0
+          masklen: 24
+          route_map: RMAP_1
+        - prefix: 198.51.100.0
+          masklen: 24
+      address_family:
+        - afi: ipv4
+          safi: unicast
+          redistribute:
+            - protocol: ospf
+              id: 223
+              metric: 10
+            - protocol: static
+              metric: 100
+    operation: replace

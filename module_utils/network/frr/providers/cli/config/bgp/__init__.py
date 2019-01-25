@@ -34,7 +34,7 @@ from ansible.module_utils.network.frr.providers.providers import CliProvider
 from ansible.module_utils.network.frr.providers.cli.config.bgp.neighbors import Neighbors
 from ansible.module_utils.network.frr.providers.cli.config.bgp.address_family import AddressFamily
 
-REDISTRIBUTE_PROTOCOLS = frozenset(['ospf', 'eigrp', 'isis', 'table',
+REDISTRIBUTE_PROTOCOLS = frozenset(['ospf', 'osfp6', 'eigrp', 'isis', 'table',
                                     'static', 'connected', 'sharp', 'nhrp', 'kernel', 'babel', 'rip'])
 
 
