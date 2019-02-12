@@ -1,0 +1,1 @@
+- include: "providers/{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/frr_{{ frr_version }}/setup.yaml"

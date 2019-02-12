@@ -1,2 +1,11 @@
 ---
 # defaults file for frr
+
+frr_version: "{{ version | default('6.0.2') }}"
+frr_create_service_account: "{{ create_service_account | default(False) }}"
+frr_remove_service_account: "{{ remove_service_account | default(False) }}"
+frr_dependent_role_check: True
+
+temp_daemons_list_1: ['zebra']
+temp_daemons_list_2: "{{ enable_daemons | default([]) }}"
+frr_enable_daemons: "{{ temp_daemons_list_1 + temp_daemons_list_2 }}"
