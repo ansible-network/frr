@@ -6,9 +6,8 @@ frr_create_service_account: "{{ create_service_account | default(False) }}"
 frr_remove_service_account: "{{ remove_service_account | default(False) }}"
 frr_dependent_role_check: "{{ dependent_role_check | default(True) }}"
 
-temp_daemons_list_1: ['zebra']
-temp_daemons_list_2: "{{ enable_daemons | default([]) }}"
-frr_enable_daemons: "{{ temp_daemons_list_1 + temp_daemons_list_2 }}"
+temp_daemons_list_1: "{{ enable_daemons | default([]) }}"
+frr_enable_daemons: "{{ temp_daemons_list_1 + ['zebra'] }}"
 
 frr_packages:
   frr_6.0.2_CentOS_7: https://github.com/FRRouting/frr/releases/download/frr-6.0.2/frr-6.0.2-01.el7.centos.x86_64.rpm
