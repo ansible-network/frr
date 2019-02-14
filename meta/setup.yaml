@@ -33,5 +33,3 @@ argument_spec:
 required_if: 
   - ['create_service_account', True, [ 'service_account_name', 'service_account_password' ]]
 
-
-

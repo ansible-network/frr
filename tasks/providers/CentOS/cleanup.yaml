@@ -10,3 +10,4 @@
     remove: yes
     state: absent
   when: frr_remove_service_account|bool
+

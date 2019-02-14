@@ -26,8 +26,3 @@
   notify:
     - restart_frr_service
 
-
-
-
-
-
