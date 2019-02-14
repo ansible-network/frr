@@ -1,6 +1,6 @@
 - name: "Deploy FRR {{ frr_version }} on {{ ansible_hostname }} running {{ ansible_distribution }} {{ ansible_distribution_major_version }}"
   yum:
-    name: https://github.com/FRRouting/frr/releases/download/frr-6.0.2/frr-6.0.2-01.el7.centos.x86_64.rpm
+    name: "{{ frr_package }}"
     state: present
 
 - name: "Create a FRR service account on {{ ansible_hostname }}"

@@ -1,1 +1,11 @@
-- include: "providers/{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/frr_{{ frr_version }}/setup.yaml"
+- name: Set custom FRR package to download
+  set_fact:
+    frr_package: "{{ custom_package }}"
+  when: custom_package is defined
+
+- name: "Set correct FRR package to install on {{ ansible_hostname }} - FRR {{ frr_version }}"
+  set_fact:
+    frr_package: "{{ frr_packages['frr_' ~ frr_version ~ '_' ~ ansible_distribution ~ '_' ~ ansible_distribution_major_version] }}"
+  when: custom_package is not defined
+
+- include: "providers/{{ ansible_distribution }}/setup.yaml"

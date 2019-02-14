@@ -1,1 +1,1 @@
-- include: "providers/{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/cleanup.yaml"
+- include: "providers/{{ ansible_distribution }}/cleanup.yaml"
