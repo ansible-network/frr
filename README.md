@@ -21,6 +21,8 @@ the function in an Ansible playbook.
 
 * setup [[source]](https://github.com/ansible-network/frr/blob/devel/tasks/setup.yaml) [[docs]](https://github.com/ansible-network/frr/blob/devel/docs/setup.md)
 
+* cleanup [[source]](https://github.com/ansible-network/frr/blob/devel/tasks/cleanup.yaml) [[docs]](https://github.com/ansible-network/frr/blob/devel/docs/cleanup.md)
+
 ## License
 
 GPLv3
