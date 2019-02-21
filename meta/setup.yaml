@@ -29,6 +29,11 @@ argument_spec:
     type: list
     default: ['zebra']
     choices: ['bgpd', 'isisd', 'ospfd', 'ldpd', 'ospf6d', 'pimd', 'ripd', 'ripngd', 'nhrpd', 'eigrpd', 'babeld', 'sharpd', 'pbrd', 'zebra']
+  
+  custom_package:
+    description:
+      - This value defines the URL for a custom FRR package to install.
+    type: str
 
 required_if: 
   - ['create_service_account', True, [ 'service_account_name', 'service_account_password' ]]
