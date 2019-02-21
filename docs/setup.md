@@ -63,7 +63,7 @@ remote host.
 
 This value is required if `create_service_account` is set to `True`.
 
-This argument takes a crypted value. See [this] (https://docs.ansible.com/ansible/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module) for details on various ways to generate these password values.
+This argument takes a crypted value. See [[this]](https://docs.ansible.com/ansible/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module) for details on various ways to generate these password values.
 
 ### enable_daemons
 
