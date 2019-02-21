@@ -12,9 +12,9 @@ in this role inlcuding both configuration and fact collection.
 
 ## Functions
 
-This section provides a list of the availabe functions that are including
+This section provides a list of the availabe functions that are included
 in this role.  Any of the provided functions can be implemented in Ansible
-playbooks to perform automation activities on devices running FRR..
+playbooks to perform automation activities on devices running FRR.
 
 Please see the documentation link for each function for details on how to use
 the function in an Ansible playbook.
