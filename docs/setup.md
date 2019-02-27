@@ -25,8 +25,8 @@ Below is an example of how to use the `roles` directive to deploy FRR using this
       - ospfd
 ```
 
-The above playbook will deploy FRR 6.0.2, enable the `eigrpd`, `bgpd`, `ospfd` and `zebra`(always enabled by default)
-and also create a service account called `frruser` with default shell set to `/bin/vtysh`.
+The above playbook will deploy FRR 6.0.2, enable the `eigrpd`, `bgpd`, `ospfd` and `zebra`(always enabled by default) daemons,
+and also create a service account called `frruser` with the default shell set to `/bin/vtysh`.
 
 ## Arguments
 
@@ -42,7 +42,7 @@ The choices are - `6.0.2` and `5.0.2`.
 This argument determines whether or not to create a service account to manage FRR 
 on the remote host.
 
-The default shell of this service account created would be set to `/bin/vtysh`.
+The default shell of the created service account would be set to `/bin/vtysh`.
 
 The default value is `False`.
 
@@ -63,7 +63,7 @@ remote host.
 
 This value is required if `create_service_account` is set to `True`.
 
-This argument takes a crypted value. See [[this]](https://docs.ansible.com/ansible/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module) for details on various ways to generate these password values.
+This argument takes a crypted value. See [this](https://docs.ansible.com/ansible/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module) for details on various ways to generate these password values.
 
 ### enable_daemons
 
@@ -71,5 +71,5 @@ This argument takes a list of daemons that will be enabled on the remote host.
 
 The default value is `zebra` which is always enabled.
 
-The valid daemons to include in this list are: ['bgpd', 'isisd', 'ospfd', 'ldpd', 'ospf6d', 'pimd', 'ripd', 'ripngd', 'nhrpd', 'eigrpd', 'babeld', 'sharpd', 'pbrd']
+The valid daemons to include in this list are: [`bgpd`, `isisd`, `ospfd`, `ldpd`, `ospf6d`, `pimd`, `ripd`, `ripngd`, `nhrpd`, `eigrpd`, `babeld`, `sharpd`, `pbrd`]
 
