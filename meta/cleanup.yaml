@@ -1,0 +1,16 @@
+---
+argument_spec:
+  remove_service_account:
+    description:
+      - This enables or disables removing the specified service account while running the 
+        cleanup task.
+    type: bool
+
+  service_account_name:
+    description:
+      - The name of the service account to be removed while running the 
+        cleanup task.
+    type: str
+
+required_if:
+  - [ 'remove_service_account', True, [ 'service_account_name' ]]
